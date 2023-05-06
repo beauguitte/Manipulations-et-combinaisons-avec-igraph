@@ -5,17 +5,20 @@ author: "Laurent Beauguitte, groupe fmr"
 editor: visual
 ---
 
-Actualisation d'un billet de juin 2015 posté sur (https://groupefmr.hypotheses.org)
+*Actualisation d'un billet de juin 2015 posté sur (https://groupefmr.hypotheses.org)*
 
-## Deux réseaux
+Ce tutoriel décrit les fonctions d'`igraph` permet de combiner deux réseaux ayant *a minima* un sommet commun.
+
+Soit deux petits réseaux non orientés ayant trois sommets (A, C, D) et deux liens (AC, AD) en commun.
 
 ```{r}
 #| warning: false
+
 # Chargement du package
 # install.packages("igraph")
 library(igraph)
 
-#création des deux graphes
+# Création des deux réseaux
 d1 <- rbind(c("A","B"),c("A","C"), c("B","C"), c("A","D"), c("D","E"))
 d2 <- rbind(c("A","F"), c("A","D"), c("A","C"), c("C","I"))
 
@@ -24,8 +27,8 @@ g2 <- graph.data.frame(d2, directed = FALSE)
 
 #visualisation
 par(mfrow = c(1,2))
-plot(g1, main = "g1")
-plot(g2, main = "g2")
+plot(g1, vertex.color = "yellow", vertex.size = 30, main = "g1")
+plot(g2, vertex.color = "yellow", vertex.size = 30, main = "g2")
 ```
 
 ```{r}
@@ -33,21 +36,22 @@ plot(g2, main = "g2")
 dev.off()
 ````
 
-```{r}
-#3 points communs (ACD) et deux liens communs (AD et AC)
+J'ajoute des attributs à ces deux réseaux : le degré des sommets, l'intermédiarité des liens et la densité du réseau.
 
-#ajout d'attributs : degré des sommets
+```{r}
 V(g1)$degree <-  degree(g1)
 V(g2)$degree <- degree(g2)
 
-#ajout d'attributs aux liens (intermédiarité)
 E(g1)$between <- edge.betweenness(g1)
 E(g2)$between <- edge.betweenness(g2)
 
-# ajout d'attributs au réseau : densité
 g1$densite <- graph.density(g1)
 g2$densite <- graph.density(g2)
+````
 
+La fonction `complementer` permet de créer le graphe complémentaire (ou  inverse) d'un graphe. Le graphe complémentaire $G'$ du graphe $G$ a les mêmes sommets ; deux sommets de $G'$ sont adjacents si et seulement si ils ne sont pas adjacents dans $G$. Ceci peut être utile quand on étudie des réseaux denses pour mettre en évidence l'absence de relation.
+
+```{r}
 # fonction complementer
 # crée un graphe avec les liens absents du graphe de départ
 # les liens présents au départ sont eux supprimés
@@ -96,7 +100,11 @@ par(mfrow = c(1,2))
 plot(interg1, sub = "graph.intersection(g1,g2,\nkeep.all.vertices = TRUE)")
 plot(interg2, sub = "graph.intersection(g1,g2,\nkeep.all.vertices = FALSE)")
 dev.off()
+````
 
+La fonction graph.union
+
+```{r}
 #union de graphes : tout lien présent dans un moins un graphe
 #sera dans le graphe produit - tous les attributs sont conservés
 #ne crée pas de liens multiples
@@ -104,4 +112,3 @@ dev.off()
 uniong <- graph.union(g1,g2) #opérateur %u%
 
 ```
-
