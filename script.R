@@ -1,8 +1,11 @@
 #L. Beauguitte, groupe fmr, juin 2015
+#mise à jour mai 2023
 #Combinaison de graphes avec igraph
 
 rm(list=ls())
 library(igraph)
+
+#BLAB
 
 #création des deux graphes
 d1 <- rbind(c("A","B"),c("A","C"), c("B","C"), c("A","D"), c("D","E"))

@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.2.335">
+<meta name="generator" content="quarto-1.1.189">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -124,7 +124,6 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           </div>
   </div>
     
-  
     
   </div>
   
@@ -155,110 +154,107 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 </div>
 <div class="cell">
-<div class="cell-output cell-output-stdout">
-<pre><code>null device 
-          1 </code></pre>
-</div>
+
 </div>
 <p>J’ajoute des attributs à ces deux réseaux : le degré des sommets, l’intermédiarité des liens et la densité du réseau.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">V</span>(g1)<span class="sc">$</span>degree <span class="ot">&lt;-</span>  <span class="fu">degree</span>(g1)</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">V</span>(g2)<span class="sc">$</span>degree <span class="ot">&lt;-</span> <span class="fu">degree</span>(g2)</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="fu">E</span>(g1)<span class="sc">$</span>between <span class="ot">&lt;-</span> <span class="fu">edge.betweenness</span>(g1)</span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="fu">E</span>(g2)<span class="sc">$</span>between <span class="ot">&lt;-</span> <span class="fu">edge.betweenness</span>(g2)</span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>g1<span class="sc">$</span>densite <span class="ot">&lt;-</span> <span class="fu">graph.density</span>(g1)</span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>g2<span class="sc">$</span>densite <span class="ot">&lt;-</span> <span class="fu">graph.density</span>(g2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">V</span>(g1)<span class="sc">$</span>degree <span class="ot">&lt;-</span>  <span class="fu">degree</span>(g1)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">V</span>(g2)<span class="sc">$</span>degree <span class="ot">&lt;-</span> <span class="fu">degree</span>(g2)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="fu">E</span>(g1)<span class="sc">$</span>between <span class="ot">&lt;-</span> <span class="fu">edge.betweenness</span>(g1)</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="fu">E</span>(g2)<span class="sc">$</span>between <span class="ot">&lt;-</span> <span class="fu">edge.betweenness</span>(g2)</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>g1<span class="sc">$</span>densite <span class="ot">&lt;-</span> <span class="fu">graph.density</span>(g1)</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>g2<span class="sc">$</span>densite <span class="ot">&lt;-</span> <span class="fu">graph.density</span>(g2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>La fonction <code>complementer</code> permet de créer le graphe complémentaire (ou inverse) d’un graphe. Le graphe complémentaire <span class="math inline">\(G'\)</span> du graphe <span class="math inline">\(G\)</span> a les mêmes sommets ; deux sommets de <span class="math inline">\(G'\)</span> sont adjacents si et seulement si ils ne sont pas adjacents dans <span class="math inline">\(G\)</span>. Ceci peut être utile quand on étudie des réseaux denses pour mettre en évidence l’absence de relation.</p>
+<p>Les attributs des sommets et du graphe sont conservés, même si certains sont désormais faux (degré des sommets par exemple) ; les attributs des liens sont bien entendu perdus.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># fonction complementer</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="co"># crée un graphe avec les liens absents du graphe de départ</span></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="co"># les liens présents au départ sont eux supprimés</span></span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>compg1 <span class="ot">&lt;-</span> <span class="fu">graph.complementer</span>(g1, <span class="at">loops =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(compg1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>compg1 <span class="ot">&lt;-</span> <span class="fu">graph.complementer</span>(g1, <span class="at">loops =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(compg1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="2023_05_combi-igraph_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid" width="672"></p>
 </div>
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co">#les attributs des sommets et du graphe sont conservés</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="co">#les attributs des liens sont perdus</span></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="fu">V</span>(compg1)<span class="sc">$</span>degree</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">V</span>(compg1)<span class="sc">$</span>degree</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 3 2 2 2 1</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>compg1</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>compg1</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>IGRAPH da2417b UN-- 5 5 -- 
+<pre><code>IGRAPH 8514189 UN-- 5 5 -- 
 + attr: densite (g/n), name (v/c), degree (v/n)
-+ edges from da2417b (vertex names):
++ edges from 8514189 (vertex names):
 [1] A--E B--E B--D D--C C--E</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co">#fonction graph.difference premier réseau - deuxième réseau (opérateur %m%)</span></span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="co">#seuls les liens présents dans le premier réseau et non dans le deuxième sont conservés</span></span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="co">#tous les attributs du premier réseau sont gardés</span></span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>diffg1 <span class="ot">&lt;-</span> <span class="fu">graph.difference</span>(g1, g2)</span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>diffg1</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>La fonction ‘graph.difference’ prend comme arguments les deux réseaux à prendre en compte : seuls les liens présents uniquement dans le premier réseau sont conservés. Tous les attributs de ce premier réseau le sont également.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>diffg1 <span class="ot">&lt;-</span> <span class="fu">graph.difference</span>(g1, g2)</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>diffg1</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>IGRAPH da25f88 UN-- 5 3 -- 
+<pre><code>IGRAPH 852e125 UN-- 5 3 -- 
 + attr: densite (g/n), name (v/c), degree (v/n), between (e/n)
-+ edges from da25f88 (vertex names):
++ edges from 852e125 (vertex names):
 [1] A--B B--C D--E</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>diffg2 <span class="ot">&lt;-</span> <span class="fu">graph.difference</span>(g2, g1)</span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="co"># coordonnées (quasi) identiques pour faciliter la comparaison</span></span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>lay <span class="ot">&lt;-</span> <span class="fu">layout.fruchterman.reingold</span>(g1)</span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="co"># lien A-D présent dans g1 et g2 donc g1-g2 et g2-g1 entrainent sa disparition</span></span>
-<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">2</span>))</span>
-<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(g1, <span class="at">main =</span> <span class="st">"g1"</span>, <span class="at">layout =</span> lay, <span class="at">vertex.color =</span> <span class="st">"red"</span>, <span class="at">vertex.size =</span> <span class="dv">20</span>, <span class="at">vertex.label.dist =</span><span class="dv">3</span>)</span>
-<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(g2, <span class="at">main =</span> <span class="st">"g2"</span>, <span class="at">layout =</span> lay, <span class="at">vertex.color =</span> <span class="st">"red"</span>, <span class="at">vertex.size =</span> <span class="dv">20</span>, <span class="at">vertex.label.dist =</span><span class="dv">3</span>)</span>
-<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(diffg1, <span class="at">main =</span> <span class="st">"graph.difference(g1, g2)"</span>, <span class="at">layout =</span> lay, <span class="at">vertex.color =</span> <span class="st">"red"</span>, <span class="at">vertex.size =</span> <span class="dv">20</span>, <span class="at">vertex.label.dist =</span><span class="dv">3</span>)</span>
-<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(diffg2, <span class="at">main =</span> <span class="st">"graph.difference(g2, g1)"</span>, <span class="at">layout =</span> lay, <span class="at">vertex.color =</span> <span class="st">"red"</span>, <span class="at">vertex.size =</span> <span class="dv">20</span>, <span class="at">vertex.label.dist =</span><span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>diffg2 <span class="ot">&lt;-</span> <span class="fu">graph.difference</span>(g2, g1)</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="co"># coordonnées (quasi) identiques pour faciliter la comparaison</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>lay <span class="ot">&lt;-</span> <span class="fu">layout.fruchterman.reingold</span>(g1)</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="co"># lien A-D présent dans g1 et g2 donc g1-g2 et g2-g1 entrainent sa disparition</span></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">2</span>))</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(g1, <span class="at">main =</span> <span class="st">"g1"</span>, <span class="at">layout =</span> lay, <span class="at">vertex.color =</span> <span class="st">"red"</span>, <span class="at">vertex.size =</span> <span class="dv">20</span>, <span class="at">vertex.label.dist =</span><span class="dv">3</span>)</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(g2, <span class="at">main =</span> <span class="st">"g2"</span>, <span class="at">layout =</span> lay, <span class="at">vertex.color =</span> <span class="st">"red"</span>, <span class="at">vertex.size =</span> <span class="dv">20</span>, <span class="at">vertex.label.dist =</span><span class="dv">3</span>)</span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(diffg1, <span class="at">main =</span> <span class="st">"graph.difference(g1, g2)"</span>, <span class="at">layout =</span> lay, <span class="at">vertex.color =</span> <span class="st">"red"</span>, <span class="at">vertex.size =</span> <span class="dv">20</span>, <span class="at">vertex.label.dist =</span><span class="dv">3</span>)</span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(diffg2, <span class="at">main =</span> <span class="st">"graph.difference(g2, g1)"</span>, <span class="at">layout =</span> lay, <span class="at">vertex.color =</span> <span class="st">"red"</span>, <span class="at">vertex.size =</span> <span class="dv">20</span>, <span class="at">vertex.label.dist =</span><span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="2023_05_combi-igraph_files/figure-html/unnamed-chunk-4-2.png" class="img-fluid" width="672"></p>
+<p><img src="2023_05_combi-igraph_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid" width="672"></p>
 </div>
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dev.off</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>null device 
-          1 </code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co">#calculer degré actualisé</span></span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="fu">V</span>(diffg1)<span class="sc">$</span>degree2 <span class="ot">&lt;-</span> <span class="fu">degree</span>(diffg1)</span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="fu">V</span>(diffg1)<span class="sc">$</span>degree</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell">
+
+</div>
+<p>Après transformation, certains des attributs conservés peuvent être devenus faux et il est donc nécessaire de les recalculer (densité, degré, intermédiarité des sommets et/ou des liens, etc.).</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co">#calculer degré actualisé</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="fu">V</span>(diffg1)<span class="sc">$</span>degree2 <span class="ot">&lt;-</span> <span class="fu">degree</span>(diffg1)</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="fu">V</span>(diffg1)<span class="sc">$</span>degree</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 3 2 2 2 1</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">V</span>(diffg1)<span class="sc">$</span>degree2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">V</span>(diffg1)<span class="sc">$</span>degree2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 1 2 1 1 1</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co">#graph.disjoint.union pour joindre des graphes dont les sommets différents (opérateur %du%)</span></span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="co">#liens communs à deux graphes : conserve les attributs</span></span>
-<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a><span class="co">#tous les sommets sont conservés (opérateur %s%)</span></span>
-<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>interg1 <span class="ot">&lt;-</span> <span class="fu">graph.intersection</span>(g1,g2, <span class="at">keep.all.vertices =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a><span class="co">#seuls sommets adjacents aux liens communs sont gardés (ici ACD)</span></span>
-<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>interg2 <span class="ot">&lt;-</span> <span class="fu">graph.intersection</span>(g1,g2, <span class="at">keep.all.vertices =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>))</span>
-<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(interg1, <span class="at">sub =</span> <span class="st">"graph.intersection(g1,g2,</span><span class="sc">\n</span><span class="st">keep.all.vertices = TRUE)"</span>)</span>
-<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(interg2, <span class="at">sub =</span> <span class="st">"graph.intersection(g1,g2,</span><span class="sc">\n</span><span class="st">keep.all.vertices = FALSE)"</span>)</span>
-<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a><span class="fu">dev.off</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>null device 
-          1 </code></pre>
 </div>
-</div>
-<p>La fonction graph.union</p>
+<p>La fonction <code>graph.disjoint.union</code> permet de joindre des graphes dont les sommets différents (opérateur %du%)</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co">#union de graphes : tout lien présent dans un moins un graphe</span></span>
-<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="co">#sera dans le graphe produit - tous les attributs sont conservés</span></span>
-<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a><span class="co">#ne crée pas de liens multiples</span></span>
-<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>uniong <span class="ot">&lt;-</span> <span class="fu">graph.union</span>(g1,g2) <span class="co">#opérateur %u%</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co">#liens communs à deux graphes : conserve les attributs</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="co">#tous les sommets sont conservés (opérateur %s%)</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>interg1 <span class="ot">&lt;-</span> <span class="fu">graph.intersection</span>(g1,g2, <span class="at">keep.all.vertices =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a><span class="co">#seuls sommets adjacents aux liens communs sont gardés (ici ACD)</span></span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>interg2 <span class="ot">&lt;-</span> <span class="fu">graph.intersection</span>(g1,g2, <span class="at">keep.all.vertices =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>))</span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(interg1, <span class="at">sub =</span> <span class="st">"graph.intersection(g1,g2,</span><span class="sc">\n</span><span class="st">keep.all.vertices = TRUE)"</span>)</span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(interg2, <span class="at">sub =</span> <span class="st">"graph.intersection(g1,g2,</span><span class="sc">\n</span><span class="st">keep.all.vertices = FALSE)"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="2023_05_combi-igraph_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<div class="cell">
+
+</div>
+<p>La fonction <code>graph.union</code> crée un réseau où tous les liens présents dans au moins un des réseaux de départ sont conservés. Tous les attributs sont conservés. <!-- vérifier si option pour valuer les liens--></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co">#union de graphes : tout lien présent dans un moins un graphe</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="co">#sera dans le graphe produit - tous les attributs sont conservés</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="co">#ne crée pas de liens multiples</span></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>uniong <span class="ot">&lt;-</span> <span class="fu">graph.union</span>(g1,g2) <span class="co">#opérateur %u%</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 
 </main>
@@ -304,24 +300,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     button.classList.add('code-copy-button-checked');
     var currentTitle = button.getAttribute("title");
     button.setAttribute("title", "Copied!");
-    let tooltip;
-    if (window.bootstrap) {
-      button.setAttribute("data-bs-toggle", "tooltip");
-      button.setAttribute("data-bs-placement", "left");
-      button.setAttribute("data-bs-title", "Copied!");
-      tooltip = new bootstrap.Tooltip(button, 
-        { trigger: "manual", 
-          customClass: "code-copy-button-tooltip",
-          offset: [0, -8]});
-      tooltip.show();    
-    }
     setTimeout(function() {
-      if (tooltip) {
-        tooltip.hide();
-        button.removeAttribute("data-bs-title");
-        button.removeAttribute("data-bs-toggle");
-        button.removeAttribute("data-bs-placement");
-      }
       button.setAttribute("title", currentTitle);
       button.classList.remove('code-copy-button-checked');
     }, 1000);
@@ -357,42 +336,24 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       return note.innerHTML;
     });
   }
-  const findCites = (el) => {
-    const parentEl = el.parentElement;
-    if (parentEl) {
-      const cites = parentEl.dataset.cites;
-      if (cites) {
-        return {
-          el,
-          cites: cites.split(' ')
-        };
-      } else {
-        return findCites(el.parentElement)
-      }
-    } else {
-      return undefined;
-    }
-  };
   var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
   for (var i=0; i<bibliorefs.length; i++) {
     const ref = bibliorefs[i];
-    const citeInfo = findCites(ref);
-    if (citeInfo) {
-      tippyHover(citeInfo.el, function() {
-        var popup = window.document.createElement('div');
-        citeInfo.cites.forEach(function(cite) {
-          var citeDiv = window.document.createElement('div');
-          citeDiv.classList.add('hanging-indent');
-          citeDiv.classList.add('csl-entry');
-          var biblioDiv = window.document.getElementById('ref-' + cite);
-          if (biblioDiv) {
-            citeDiv.innerHTML = biblioDiv.innerHTML;
-          }
-          popup.appendChild(citeDiv);
-        });
-        return popup.innerHTML;
+    const cites = ref.parentNode.getAttribute('data-cites').split(' ');
+    tippyHover(ref, function() {
+      var popup = window.document.createElement('div');
+      cites.forEach(function(cite) {
+        var citeDiv = window.document.createElement('div');
+        citeDiv.classList.add('hanging-indent');
+        citeDiv.classList.add('csl-entry');
+        var biblioDiv = window.document.getElementById('ref-' + cite);
+        if (biblioDiv) {
+          citeDiv.innerHTML = biblioDiv.innerHTML;
+        }
+        popup.appendChild(citeDiv);
       });
-    }
+      return popup.innerHTML;
+    });
   }
 });
 </script>

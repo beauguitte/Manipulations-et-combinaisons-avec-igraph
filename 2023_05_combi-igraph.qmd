@@ -33,8 +33,9 @@ plot(g2, vertex.color = "yellow", vertex.size = 30, main = "g2")
 
 ```{r}
 #| echo: false
+#| results: hide
 dev.off()
-````
+```
 
 J'ajoute des attributs à ces deux réseaux : le degré des sommets, l'intermédiarité des liens et la densité du réseau.
 
@@ -47,25 +48,24 @@ E(g2)$between <- edge.betweenness(g2)
 
 g1$densite <- graph.density(g1)
 g2$densite <- graph.density(g2)
-````
+```
 
 La fonction `complementer` permet de créer le graphe complémentaire (ou  inverse) d'un graphe. Le graphe complémentaire $G'$ du graphe $G$ a les mêmes sommets ; deux sommets de $G'$ sont adjacents si et seulement si ils ne sont pas adjacents dans $G$. Ceci peut être utile quand on étudie des réseaux denses pour mettre en évidence l'absence de relation.
 
+Les attributs des sommets et du graphe sont conservés, même si certains sont désormais faux (degré des sommets par exemple) ; les attributs des liens sont bien entendu perdus.
+
 ```{r}
-# fonction complementer
-# crée un graphe avec les liens absents du graphe de départ
-# les liens présents au départ sont eux supprimés
+
 compg1 <- graph.complementer(g1, loops = FALSE)
 plot(compg1)
 
-#les attributs des sommets et du graphe sont conservés
-#les attributs des liens sont perdus
 V(compg1)$degree
 compg1
+```
 
-#fonction graph.difference premier réseau - deuxième réseau (opérateur %m%)
-#seuls les liens présents dans le premier réseau et non dans le deuxième sont conservés
-#tous les attributs du premier réseau sont gardés
+La fonction 'graph.difference' prend comme arguments les deux réseaux à prendre en compte : seuls les liens présents uniquement dans le premier réseau sont conservés. Tous les attributs de ce premier réseau le sont également.
+
+```{r}
 diffg1 <- graph.difference(g1, g2)
 diffg1
 
@@ -78,17 +78,29 @@ lay <- layout.fruchterman.reingold(g1)
 par(mfrow = c(2,2))
 plot(g1, main = "g1", layout = lay, vertex.color = "red", vertex.size = 20, vertex.label.dist =3)
 plot(g2, main = "g2", layout = lay, vertex.color = "red", vertex.size = 20, vertex.label.dist =3)
+
 plot(diffg1, main = "graph.difference(g1, g2)", layout = lay, vertex.color = "red", vertex.size = 20, vertex.label.dist =3)
 plot(diffg2, main = "graph.difference(g2, g1)", layout = lay, vertex.color = "red", vertex.size = 20, vertex.label.dist =3)
-dev.off()
+```
 
+```{r}
+#| echo: false
+#| warning: false
+#| results: hide
+dev.off()
+```
+
+Après transformation, certains des attributs conservés peuvent être devenus faux et il est donc nécessaire de les recalculer (densité, degré, intermédiarité des sommets et/ou des liens, etc.).
+
+```{r}
 #calculer degré actualisé
 V(diffg1)$degree2 <- degree(diffg1)
 V(diffg1)$degree
 V(diffg1)$degree2
+```
 
-#graph.disjoint.union pour joindre des graphes dont les sommets différents (opérateur %du%)
 
+```{r}
 #liens communs à deux graphes : conserve les attributs
 #tous les sommets sont conservés (opérateur %s%)
 interg1 <- graph.intersection(g1,g2, keep.all.vertices = TRUE)
@@ -99,16 +111,39 @@ interg2 <- graph.intersection(g1,g2, keep.all.vertices = FALSE)
 par(mfrow = c(1,2))
 plot(interg1, sub = "graph.intersection(g1,g2,\nkeep.all.vertices = TRUE)")
 plot(interg2, sub = "graph.intersection(g1,g2,\nkeep.all.vertices = FALSE)")
-dev.off()
-````
-
-La fonction graph.union
-
-```{r}
-#union de graphes : tout lien présent dans un moins un graphe
-#sera dans le graphe produit - tous les attributs sont conservés
-#ne crée pas de liens multiples
-
-uniong <- graph.union(g1,g2) #opérateur %u%
 
 ```
+
+La fonction `graph.disjoint.union` (`disjoint_union`) permet de créer un graphe à partir de deux graaphes différents. Les attributs respectifs des deux graphes sont conservés, avec des valeurs NA si un attribut est présent dans un graphe et absent dans l'autre. Les noms des sommets doivent être différents dans les deux réseaux. Enfin, les deux réseaux doivent être de même type en ce qui concerne l'orientation des liens : les deux doivent être orientés ou non-orientés.
+
+```{r}
+#création d'un réseau autre avec un attribut sur les sommets
+d3 <- rbind(c("i","j"),c("j","k"), c("i","k"), c("k","l"), c("l","m"))
+s3 <- data.frame(rbind(c("i","1"), c("j","1"), c("k", "2"), c("l",  "2"), c("m","1")))
+names(s3) <- c("ID", "Attribut1")
+g3 <- graph.data.frame(d3, s3, directed = FALSE)
+
+#union de g1 et g3
+gu <- graph.disjoint.union(g1, g3)
+
+#attribut présent pour certains sommets seulement
+V(gu)$Attribut1
+
+```
+
+```{r}
+#| echo: false
+#| results: hide
+dev.off()
+```
+
+La fonction `graph.union` crée un réseau où tous les liens présents dans au moins un des réseaux de départ sont conservés. Tous les attributs sont conservés. Si deux attributs portent le même nom, un suffixe '_1', '_2` etc. est ajouté (voir l'attribut `degree` ci-dessous). Comme avec la fonction précédente, les deux réseaux doivent être tous deux orientés ou non orientés. Par contre, il n'existe pas d'option pour créer un réseau valué à l'aide de cette opération.
+<!-- vérifier si option pour valuer les liens-->
+
+
+```{r}
+
+uniong <- graph.union(g1,g2) 
+```
+
+Autres fonctions à explorer : compose, contract, reverse_edges (change orientation des liens)
