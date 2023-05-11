@@ -6,12 +6,12 @@ Il présente différentes fonctions permettant de manipuler son réseau puis de 
 
 Liste des fonctions évoquées :
 
-- reverse_edges
-- contract
-- simplify
-- simplify_and_colorize
-- graph.complementer
-- graph.difference
-- graph.intersection
-- graph.disjoint.union
-- graph.union
+- `reverse_edges`
+- `contract`
+- `simplify`
+- `simplify_and_colorize`
+- `graph.complementer`
+- `graph.difference`
+- `graph.intersection`
+- `graph.disjoint.union`
+- `graph.union`
