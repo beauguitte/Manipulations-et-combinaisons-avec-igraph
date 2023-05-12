@@ -1,6 +1,6 @@
-# igraph combinaisons 
+# igraph combinaisons <img src="logofmr.png" align="right" width="140"/>
 
-Ce script actualise le contenu du billet Combinaisons de graphes avec `igraph` du blog fmr : http://groupefmr.hypotheses.org/4097.
+Ce script actualise le contenu du billet  du blog fmr : [Combinaisons de graphes avec `igraph`](http://groupefmr.hypotheses.org/4097).
 
 Il présente différentes fonctions permettant de manipuler son réseau puis de combiner deux réseaux partageant *a minima* un sommet commun.
 
