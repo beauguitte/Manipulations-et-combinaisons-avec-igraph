@@ -1,8 +1,8 @@
-# igraph combinaisons <img src="logofmr.png" align="right" width="140"/>
+# Manipulations et combinaisons avec `igraph` <img src="logofmr.png" align="right" width="160"/>
 
 Ce script actualise le contenu du billet  du blog fmr : [Combinaisons de graphes avec `igraph`](http://groupefmr.hypotheses.org/4097).
 
-Il présente différentes fonctions permettant de manipuler son réseau puis de combiner deux réseaux partageant *a minima* un sommet commun.
+Il présente différentes fonctions permettant de manipuler son objet `igraph` puis de combiner deux réseaux partageant *a minima* un sommet commun.
 
 Liste des fonctions évoquées :
 
