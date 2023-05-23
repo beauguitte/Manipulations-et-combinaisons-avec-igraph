@@ -15,3 +15,5 @@ Liste des fonctions évoquées :
 - `graph.intersection`
 - `graph.disjoint.union`
 - `graph.union`
+
+

@@ -2,10 +2,11 @@
 title: "Combiner des réseaux avec igraph"
 format: html
 author: "Laurent Beauguitte, groupe fmr"
+date: mai 2023
 editor: visual
 ---
 
-*Actualisation d'un billet de juin 2015 posté sur (https://groupefmr.hypotheses.org)*
+*Actualisation d'un billet de juin 2015 posté sur [https://groupefmr.hypotheses.org](https://groupefmr.hypotheses.org)*
 
 Ce tutoriel décrit les fonctions d'`igraph` permettant de manipuler un réseau (simple ou non) et de combiner deux réseaux ayant *a minima* un sommet commun.
 
@@ -15,7 +16,7 @@ Ce tutoriel décrit les fonctions d'`igraph` permettant de manipuler un réseau 
 
 Soit un réseau simple orienté. La fonction `reverse_edges()` inverse l'orientation des liens. Tous les attributs sont conservés. J'avoue ne pas trop savoir dans quel contexte on peut être amené à utiliser cette fonction.
 
-Plus intéressante peut-être, la fonction `contract` permet d'agréger différents sommets en fonction d'un attribut. Ces derniers peuvent dans certains cas être conservés. 
+Plus intéressante peut-être, la fonction `contract` permet d'agréger différents sommets en fonction d'un attribut. Ces derniers peuvent dans certains cas être conservés.
 
 ```{r}
 #| warning: false
@@ -24,7 +25,7 @@ library(igraph)
 # réseau orienté minimal
 d1 <- rbind(c("A","B"),c("B","C"), c("C","D"))
 
-# trnansformation en objet igraph
+# transformation en objet igraph
 g1 <- graph.data.frame(d1, directed = TRUE)
 
 # changement de l'orientation des liens
@@ -63,20 +64,17 @@ g1c <- contract(g1,
 
 g1c
 plot(g1c)
-````
 
-```{r}
 #| warning: false
 #| echo: false
 rm(d1, d2, g1, g1c)
 ```
 
-Le réseau contracté conserve les attributs sous forme de listes. Par contre, il contient  des boucles et des liems multiples. Ce qui permet d'examiner la fonction `simplify`.
+Le réseau contracté conserve les attributs sous forme de listes. Par contre, il contient des boucles et des liems multiples. Ce qui permet d'examiner la fonction `simplify`.
 
 ## Boucles et liens multiples
 
-Pourquoi simplifier le réseau ? Tout simplement parce que plusieurs fonctions d`igraph` donnent des résultats erronés si le graphe contient des boucles et/ou des liens multiples.
-La fonction `simplify` permet de transformer ces réseaux en réseaux simples. La fonction `simplify_and_colorize` permet de garder en mémoire l'existence de ces boucles et liens multiples.
+Pourquoi simplifier le réseau ? Tout simplement parce que plusieurs fonctions d`igraph` donnent des résultats erronés si le graphe contient des boucles et/ou des liens multiples. La fonction `simplify` permet de transformer ces réseaux en réseaux simples. La fonction `simplify_and_colorize` permet de garder en mémoire l'existence de ces boucles et liens multiples.
 
 ```{r}
 # manipulation d'un réseau avec boucle et liens multiples
@@ -107,7 +105,7 @@ Par contre, la densité donne un résaltat non satisfaisant. Il considère qu'il
 Ceci s'explique aisément, l'approche standard en analyse de réseau avec ce type d'objet est de commencer par supprimer boucles et liens multiples.
 
 ```{r}
-# Par défaut, simplify supprimer boucles et liens multiples
+# Par défaut, simplify supprime boucles et liens multiples
 g1_2 <- simplify(g1)
 plot(g1_2)
 
@@ -144,7 +142,7 @@ d2 <- rbind(c("A","F"), c("A","D"), c("A","C"), c("C","I"))
 g1 <- graph.data.frame(d1, directed = FALSE)
 g2 <- graph.data.frame(d2, directed = FALSE)
 
-#visualisation
+# visualisation
 par(mfrow = c(1,2))
 plot(g1, vertex.color = "yellow", vertex.size = 30, main = "g1")
 plot(g2, vertex.color = "yellow", vertex.size = 30, main = "g2")
@@ -170,7 +168,7 @@ g1$densite <- graph.density(g1)
 g2$densite <- graph.density(g2)
 ```
 
-La fonction `complementer` permet de créer le graphe complémentaire (ou graphe inverse) d'un graphe. Le graphe complémentaire $G'$ du graphe $G$ a les mêmes sommets et deux sommets de $G'$ sont adjacents si et seulement si ils ne sont pas adjacents dans $G$. Ceci peut être utile quand on étudie des réseaux denses pour mettre en évidence l'*absence de relation*.
+La fonction `graph.complementer` permet de créer le graphe complémentaire (ou graphe inverse) d'un graphe. Le graphe complémentaire $G'$ du graphe $G$ a les mêmes sommets et deux sommets de $G'$ sont adjacents si et seulement si ils ne sont pas adjacents dans $G$. Ceci peut être utile quand on étudie des réseaux denses pour mettre en évidence l'**absence de relation**.
 
 Les attributs des sommets et du graphe sont conservés, même si certains sont désormais faux (degré des sommets par exemple) ; les attributs des liens sont bien entendu perdus.
 
@@ -213,19 +211,20 @@ dev.off()
 Après transformation, certains des attributs conservés peuvent être devenus faux et il est donc nécessaire de les recalculer (densité, degré, intermédiarité des sommets et/ou des liens, etc.).
 
 ```{r}
-#calculer degré actualisé
+# calculer degré actualisé
 V(diffg1)$degree2 <- degree(diffg1)
 V(diffg1)$degree
 V(diffg1)$degree2
 ```
 
+La fonction `graph.intersection` prend en arguments deux réseaux et crée un réseau contenant les liens communs aux deux réseaux. Les attributs des sommets et des liens communs sont conservés. Il est possible de conserver ou d'éliminer les sommets devenant isolés suite à l'pération.
 
 ```{r}
-#liens communs à deux graphes : conserve les attributs
-#tous les sommets sont conservés (opérateur %s%)
+# liens communs à deux graphes : conserve les attributs
+# tous les sommets sont conservés (opérateur %s%)
 interg1 <- graph.intersection(g1,g2, keep.all.vertices = TRUE)
 
-#seuls sommets adjacents aux liens communs sont gardés (ici ACD)
+# seuls sommets adjacents aux liens communs sont gardés (ici ACD)
 interg2 <- graph.intersection(g1,g2, keep.all.vertices = FALSE)
 
 par(mfrow = c(1,2))
@@ -243,16 +242,16 @@ plot(interg2, sub = "graph.intersection(g1,g2,\nkeep.all.vertices = FALSE)")
 La fonction `graph.disjoint.union` (`disjoint_union`) permet de créer un graphe à partir de deux graphes différents. Les attributs respectifs des deux graphes sont conservés, avec des valeurs `NA` si un attribut est présent dans un graphe et absent dans l'autre. Les noms des sommets doivent être différents dans les deux réseaux. Enfin, les deux réseaux doivent être de même type en ce qui concerne l'orientation des liens : les deux doivent être orientés ou non-orientés.
 
 ```{r}
-#création d'un réseau autre avec un attribut sur les sommets
+# création d'un réseau autre avec un attribut sur les sommets
 d3 <- rbind(c("i","j"),c("j","k"), c("i","k"), c("k","l"), c("l","m"))
 s3 <- data.frame(rbind(c("i","1"), c("j","1"), c("k", "2"), c("l",  "2"), c("m","1")))
 names(s3) <- c("ID", "Attribut1")
 g3 <- graph.data.frame(d3, s3, directed = FALSE)
 
-#union de g1 et g3
+# union de g1 et g3
 gu <- graph.disjoint.union(g1, g3)
 
-#attribut présent pour certains sommets seulement
+# attribut présent pour certains sommets seulement
 V(gu)$Attribut1
 
 ```
@@ -263,10 +262,9 @@ V(gu)$Attribut1
 dev.off()
 ```
 
-La fonction `graph.union` crée un réseau où tous les liens présents dans au moins un des réseaux de départ sont conservés. Tous les attributs sont conservés. Si deux attributs portent le même nom, un suffixe '_1', '_2` etc. est ajouté (voir l'attribut `degree` ci-dessous). Comme avec la fonction précédente, les deux réseaux doivent être tous deux orientés ou non orientés. Par contre, il n'existe pas d'option pour créer un réseau valué à l'aide de cette opération.
+La fonction `graph.union` crée un réseau où tous les liens présents dans au moins un des réseaux de départ sont conservés. Tous les attributs sont conservés. Si deux attributs portent le même nom, un suffixe '\_1', '\_2`etc. est ajouté (voir l'attribut`degree\` ci-dessous). Comme avec la fonction précédente, les deux réseaux doivent être tous deux orientés ou non orientés. Par contre, il n'existe pas d'option pour créer un réseau valué à l'aide de cette opération.
 
 <!-- vérifier si option pour valuer les liens-->
-
 
 ```{r}
 
@@ -275,6 +273,3 @@ uniong <- graph.union(g1,g2)
 ```
 
 Il existe également la fonction `compose`. Là encore, à la lecture de la documentation, je ne sais pas trop à quelle occasion elle est utile. Elle crée un sommet $ab$ seulement s'il existe un lien $ac$ dans le premier réseau et un lien $cb$ dans le deuxième.
-
-
-
